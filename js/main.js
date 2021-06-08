@@ -20,14 +20,6 @@ const getRandomNumFloat = function (first, second, parce = 0) {
   return Number(result.toFixed(parce));
 };
 
-const shuffleArray = function (array) {
-  for (let index = array.length - 1; index > 0; index--) {
-    const otherIndex = Math.floor(Math.random() * (index + 1));
-    [array[index], array[otherIndex]] = [array[otherIndex], array[index]];
-  }
-  return array;
-};
-
 const ADVENTS_COUNTS = 10;
 const TYPES = [
   'palace',
@@ -93,20 +85,23 @@ const lngs = [
   139.80000,
 ];
 
-const getFeatures = function () {
-  const featuresCounts = getRandomNum(0, FEATURES_LIST.length);
-  const featuresList = shuffleArray(FEATURES_LIST.slice());
-  featuresList.splice(featuresCounts, featuresList.length);
-  return featuresList;
+const getFeatures = function (array) {
+  const features = [];
+  for (const feature of array) {
+    const itHas = getRandomNum(+false, +true);
+    if (itHas) {
+      features.push(feature);
+    }
+  }
+  return features;
 };
 
-const getPhotos = function () {
-  const photos = new Array(getRandomNum(minPhotos, maxPhotos)).fill(null);
-  return photos.map(() => PHOTOS[getRandomNum(0, PHOTOS.length - 1)]);
-};
-
-const getRandomArrayElement = function (array) {
+const getRandomArrayElements = function (array) {
   return array[getRandomNum(0, array.length - 1)];
+};
+
+const getAnyElements = function (array, min, max) {
+  return new Array(getRandomNum(min, max)).fill(null).map(() => getRandomArrayElements(array));
 };
 
 const getCoords = function (line) {
@@ -125,25 +120,28 @@ const GenerateLocation = function () {
 const GenerateOffer = function () {
   this.title = adventTitle;
   this.price = getRandomNum(minPrice, maxPrice);
-  this.type = getRandomArrayElement(TYPES);
+  this.type = getRandomArrayElements(TYPES);
   this.rooms = getRandomNum(minRooms, maxRooms);
   this.guests = getRandomNum(minGuests, maxGuests);
-  this.checkin = getRandomArrayElement(CHECKINS);
-  this.checkout = getRandomArrayElement(CHECKOUTS);
-  this.features = getFeatures();
-  this.description = getRandomArrayElement(DESCRIPTIONS);
-  this.photos = getPhotos();
+  this.checkin = getRandomArrayElements(CHECKINS);
+  this.checkout = getRandomArrayElements(CHECKOUTS);
+  this.features = getFeatures(FEATURES_LIST);
+  this.description = getRandomArrayElements(DESCRIPTIONS);
+  this.photos = getAnyElements(PHOTOS, minPhotos, maxPhotos);
 };
 
 const GenerateAdvent = function () {
   this.author = new GenerateAuthor();
   this.offer = new GenerateOffer();
   this.location = new GenerateLocation();
+  this.GenerateAddres = function () {
+    this.offer.addres = Object.values(this.location).join(', ');
+  };
 };
 
 // eslint-disable-next-line no-unused-vars
 const advents = new Array(ADVENTS_COUNTS).fill(null).map(() => {
   const advent = new GenerateAdvent();
-  advent.offer.addres = Object.values(advent.location).join(', ');
+  advent.GenerateAddres();
   return advent;
 });
