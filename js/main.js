@@ -9,7 +9,7 @@ const getRandomNum = function (first, second) {
 };
 
 const getRandomNumFloat = function (first, second, parce = 0) {
-  if (!Number.isFinite(first) || !Number.isFinite(second) || second < 0 || !Number.isFinite(parce)) {
+  if (!Number.isFinite(first) || !Number.isFinite(second) || !Number.isFinite(parce)) {
     throw new Error('одно или оба значения не являются конечным числом');
   }
   parce = Math.floor(parce);
@@ -20,14 +20,6 @@ const getRandomNumFloat = function (first, second, parce = 0) {
   return Number(result.toFixed(parce));
 };
 
-const shuffleArray = function (array) {
-  for (let index = array.length - 1; index > 0; index--) {
-    const otherIndex = Math.floor(Math.random() * (index + 1));
-    [array[index], array[otherIndex]] = [array[otherIndex], array[index]];
-  }
-  return array;
-};
-
 const ADVENTS_COUNTS = 10;
 const TYPES = [
   'palace',
@@ -36,12 +28,6 @@ const TYPES = [
   'bungalow',
   'hotel',
 ];
-const CHECKINS = [
-  '12:00',
-  '13:00',
-  '14:00',
-];
-const CHECKOUTS = CHECKINS;
 const FEATURES_LIST = [
   'wifi',
   'dishwasher',
@@ -55,10 +41,11 @@ const DESCRIPTIONS = [
   'Неплохое помещение',
   'Хорошее место для ночлега',
 ];
+const BASEDIR = 'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/';
 const PHOTOS = [
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/duonguyen-8LrGtIxxa4w.jpg',
-  'https://assetshtmlacademy.ru/content/intensive/javascript-1/keksobooking/brandon-hoogenboom-SNxQGWxZQi0.jpg',
-  'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
+  'duonguyen-8LrGtIxxa4w.jpg',
+  'brandon-hoogenboom-SNxQGWxZQi0.jpg',
+  'claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
 const avatars = new Array(ADVENTS_COUNTS).fill(0).map((photo, index) => {
@@ -81,69 +68,57 @@ const [minRooms, maxRooms] = [1, 10];
 
 const [minGuests, maxGuests] = [1, 10];
 
-const [minPhotos, maxPhotos] = [1, 10];
+const [startTime, endTime] = [12, 14];
 
-const lats = [
-  35.65000,
-  35.70000,
-];
+const [latMin, latMax, lngMin, lngMax, accu] = [35.65000, 35.70000, 139.70000, 139.80000, 6];
 
-const lngs = [
-  139.70000,
-  139.80000,
-];
-
-const getFeatures = function () {
-  const featuresCounts = getRandomNum(0, FEATURES_LIST.length);
-  const featuresList = shuffleArray(FEATURES_LIST.slice());
-  featuresList.splice(featuresCounts, featuresList.length);
-  return featuresList;
+const getParceArray = function (array) {
+  const parceArray = [];
+  for (const item of array) {
+    const itHas = getRandomNum(+false, +true);
+    if (itHas) {
+      parceArray.push(item);
+    }
+  }
+  return parceArray;
 };
 
-const getPhotos = function () {
-  const photos = new Array(getRandomNum(minPhotos, maxPhotos)).fill(null);
-  return photos.map(() => PHOTOS[getRandomNum(0, PHOTOS.length - 1)]);
-};
-
-const getRandomArrayElement = function (array) {
+const getRandomArrayElements = function (array) {
   return array[getRandomNum(0, array.length - 1)];
 };
 
-const getCoords = function (line) {
-  return getRandomNumFloat(line[0], line[1], 6);
+const getCoords = function (minCoords, maxCoords, digits) {
+  return getRandomNumFloat(minCoords, maxCoords, digits);
 };
 
-const GenerateAuthor = function () {
+const Author = function () {
   this.avatar = getAvatarImage();
 };
 
-const GenerateLocation = function () {
-  this.lat = getCoords(lats);
-  this.lng = getCoords(lngs);
+const Location = function () {
+  this.lat = getCoords(latMin, latMax, accu);
+  this.lng = getCoords(lngMin, lngMax, accu);
 };
 
-const GenerateOffer = function () {
+const Offer = function () {
   this.title = adventTitle;
   this.price = getRandomNum(minPrice, maxPrice);
-  this.type = getRandomArrayElement(TYPES);
+  this.type = getRandomArrayElements(TYPES);
   this.rooms = getRandomNum(minRooms, maxRooms);
   this.guests = getRandomNum(minGuests, maxGuests);
-  this.checkin = getRandomArrayElement(CHECKINS);
-  this.checkout = getRandomArrayElement(CHECKOUTS);
-  this.features = getFeatures();
-  this.description = getRandomArrayElement(DESCRIPTIONS);
-  this.photos = getPhotos();
+  this.checkin = `${getRandomNum(startTime, endTime)}:00`;
+  this.checkout = `${getRandomNum(startTime, endTime)}:00`;
+  this.features = getParceArray(FEATURES_LIST);
+  this.description = getRandomArrayElements(DESCRIPTIONS);
+  this.photos = getParceArray(PHOTOS).map((item) => `${BASEDIR}${item}`);
 };
 
-const GenerateAdvent = function () {
-  this.author = new GenerateAuthor();
-  this.offer = new GenerateOffer();
-  this.location = new GenerateLocation();
+const Advent = function () {
+  this.author = new Author();
+  this.offer = new Offer();
+  this.location = new Location();
+  this.offer.addres = Object.values(this.location).join(', ');
 };
 
 // eslint-disable-next-line no-unused-vars
-const advents = new Array(ADVENTS_COUNTS).fill(null).map(() => {
-  const advent = new GenerateAdvent();
-  advent.offer.addres = Object.values(advent.location).join(', ');
-  return advent;
-});
+const advents = new Array(ADVENTS_COUNTS).fill(null).map(() => new Advent());
