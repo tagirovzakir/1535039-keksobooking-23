@@ -49,9 +49,9 @@ const PHOTOS = [
 ];
 
 const avatars = new Array(ADVENTS_COUNTS).fill(0).map((photo, index) => {
-  photo = index + 1;
-  if (photo < 10) {return `0${photo}`;}
-  return `${photo}`;
+  photo = `${index + 1}`;
+  if (photo.length === 1) {return `0${photo}`;}
+  return photo;
 });
 
 const getAvatarImage = function () {
@@ -87,17 +87,13 @@ const getRandomArrayElements = function (array) {
   return array[getRandomNum(0, array.length - 1)];
 };
 
-const getCoords = function (minCoords, maxCoords, digits) {
-  return getRandomNumFloat(minCoords, maxCoords, digits);
-};
-
 const Author = function () {
   this.avatar = getAvatarImage();
 };
 
 const Location = function () {
-  this.lat = getCoords(latMin, latMax, accu);
-  this.lng = getCoords(lngMin, lngMax, accu);
+  this.lat = getRandomNumFloat(latMin, latMax, accu);
+  this.lng = getRandomNumFloat(lngMin, lngMax, accu);
 };
 
 const Offer = function () {
