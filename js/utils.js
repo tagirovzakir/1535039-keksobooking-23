@@ -20,19 +20,6 @@ export const getRandomNumFloat = function (first, second, parce = 0) {
   return Number(result.toFixed(parce));
 };
 
-export const getAvatarImage = function (length) {
-  const avatars = new Array(length).fill(0).map((photo, index) => {
-    photo = `${index + 1}`;
-    if (photo.length === 1) {
-      return `0${photo}`;
-    }
-    return photo;
-  });
-  if (!avatars.length) {return 'img/avatars/user00.png';}
-  const avatarNumber = avatars.splice(getRandomNum(0, avatars.length - 1), 1);
-  return `img/avatars/user${avatarNumber}.png`;
-};
-
 export const getParceArray = function (array) {
   const parceArray = [];
   for (const item of array) {
