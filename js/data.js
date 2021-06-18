@@ -1,6 +1,6 @@
 import { getRandomNum, getRandomNumFloat, getParceArray, getRandomArrayElements } from './utils.js';
 
-const ADVENTS_COUNTS = 10,
+const ADVENTS_COUNTS = 1,
   TYPES = [
     'palace',
     'flat',
