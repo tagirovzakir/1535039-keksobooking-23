@@ -27,7 +27,7 @@ const ADVENTS_COUNTS = 10,
     'brandon-hoogenboom-SNxQGWxZQi0.jpg',
     'claire-rendall-b6kAwr1i0Iw.jpg',
   ];
-const adventTitle = 'Объявление',
+const advertTitle = 'Объявление',
   [minPrice, maxPrice] = [1, 50000],
   [minRooms, maxRooms] = [1, 10],
   [minGuests, maxGuests] = [1, 10],
@@ -57,7 +57,7 @@ const Location = function () {
 };
 
 const Offer = function () {
-  this.title = adventTitle;
+  this.title = advertTitle;
   this.price = getRandomNum(minPrice, maxPrice);
   this.type = getRandomArrayElements(TYPES);
   this.rooms = getRandomNum(minRooms, maxRooms);
@@ -69,7 +69,7 @@ const Offer = function () {
   this.photos = getParceArray(PHOTOS).map((item) => `${BASEDIR}${item}`);
 };
 
-const Advent = function () {
+const Advert = function () {
   this.author = new Author();
   this.offer = new Offer();
   this.location = new Location();
@@ -77,4 +77,4 @@ const Advent = function () {
 };
 
 // eslint-disable-next-line no-unused-vars
-export const advents = new Array(ADVENTS_COUNTS).fill(null).map(() => new Advent());
+export const adverts = new Array(ADVENTS_COUNTS).fill(null).map(() => new Advert());
