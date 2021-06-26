@@ -1,23 +1,21 @@
-const advTitleInput = document.querySelector('#title');
-const advPriceInput = document.querySelector('#price');
-const advRoomNumber = document.querySelector('#room_number');
-const advCapacity = document.querySelector('#capacity');
+import { getInvalidElements } from './utils.js';
+
 const adForm = document.querySelector('.ad-form');
-const adFormElements = Array.from(adForm.elements);
+const advTitleInput = adForm.querySelector('#title');
+const advPriceInput = adForm.querySelector('#price');
+const advRoomNumber = adForm.querySelector('#room_number');
+const advCapacity = adForm.querySelector('#capacity');
 const submitButton = adForm.querySelector('.ad-form__submit');
+const adFormElements = Array.from(adForm.elements);
 
-const getInvalidElements = function (form) {
-  return form.filter((element) => !element.validity.valid);
-};
-
-const getValidCapacity = function () {
+const disableInvalidOptions = function () {
   if (advRoomNumber.value === '100') {
     Array.from(advCapacity.options).forEach((option) => {
-      option.value !== '0' ? option.disabled = true : option.disabled = false;
+      option.disabled = option.value !== '0';
     });
   } else {
     Array.from(advCapacity.options).forEach((option) => {
-      option.value > advRoomNumber.value || option.value === '0' ? option.disabled = true : option.disabled = false;
+      option.disabled = option.value > advRoomNumber.value || option.value === '0';
     });
   }
 };
@@ -31,44 +29,46 @@ const validateCapacity = function (index) {
   advCapacity.reportValidity();
 };
 
+window.addEventListener('load', disableInvalidOptions);
+
 advTitleInput.addEventListener('input', () => {
-  const valueLength = advTitleInput.value.length;
-  if (valueLength < advTitleInput.minLength) {
-    advTitleInput.setCustomValidity(`Введите ещё ${advTitleInput.minLength - valueLength} симв.`);
-  } else if (valueLength > advTitleInput.maxLength) {
-    advTitleInput.setCustomValidity(`Удалите лишние ${valueLength - advTitleInput.maxLength} симв.`);
-  } else {
-    advTitleInput.setCustomValidity('');
-  }
+  // const valueLength = advTitleInput.value.length;
+  // if (valueLength < advTitleInput.minLength) {
+  //   advTitleInput.setCustomValidity(`Введите ещё ${advTitleInput.minLength - valueLength} симв.`);
+  // } else if (valueLength > advTitleInput.maxLength) {
+  //   advTitleInput.setCustomValidity(`Удалите лишние ${valueLength - advTitleInput.maxLength} симв.`);
+  // } else {
+  //   advTitleInput.setCustomValidity('');
+  // }
   advTitleInput.reportValidity();
 });
 
 advPriceInput.addEventListener('input', () => {
-  const priceValue = +advPriceInput.value;
-  if (priceValue < +advPriceInput.min) {
-    advPriceInput.setCustomValidity(`Цена не может быть меньше ${advPriceInput.min}`);
-  } else if (priceValue > +advPriceInput.max) {
-    advPriceInput.setCustomValidity(`Цена не может быть больше ${advPriceInput.max}`);
-  } else {
-    advPriceInput.setCustomValidity('');
-  }
+  // const priceValue = +advPriceInput.value;
+  // if (priceValue < +advPriceInput.min) {
+  //   advPriceInput.setCustomValidity(`Цена не может быть меньше ${advPriceInput.min}`);
+  // } else if (priceValue > +advPriceInput.max) {
+  //   advPriceInput.setCustomValidity(`Цена не может быть больше ${advPriceInput.max}`);
+  // } else {
+  //   advPriceInput.setCustomValidity('');
+  // }
   advPriceInput.reportValidity();
 });
 
 advRoomNumber.addEventListener('change', () => {
-  getValidCapacity();
+  disableInvalidOptions();
   validateCapacity(advCapacity.selectedIndex);
 });
-
-advCapacity.addEventListener('click', getValidCapacity);
 
 advCapacity.addEventListener('change', () => {
   advCapacity.classList.remove('invalid');
 });
 
 submitButton.addEventListener('click', (evt) => {
-  getValidCapacity();
+  disableInvalidOptions();
   validateCapacity(advCapacity.selectedIndex);
+  advPriceInput.reportValidity();
+  advTitleInput.reportValidity();
   if (getInvalidElements(adFormElements).length) {
     evt.preventDefault();
     getInvalidElements(adFormElements).forEach((element) => element.classList.add('invalid'));
