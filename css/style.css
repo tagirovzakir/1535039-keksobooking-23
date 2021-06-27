@@ -394,12 +394,6 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
-.invalid {
-  outline: none;
-  -webkit-box-shadow: 0 0 2px 2px #c21b15;
-          box-shadow: 0 0 2px 2px #c21b15;
-}
-
 .ad-form__element--time {
   -ms-flex-preferred-size: 50%;
       flex-basis: 50%;
@@ -647,6 +641,10 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+.ad-form__element .invalid {
+  outline: none;
+  background: #ffdad7;
+}
 
 /* Футер
    ========================================================================== */

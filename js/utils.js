@@ -35,5 +35,5 @@ export const getRandomArrayElements = function (array) {
 };
 
 export const getInvalidElements = function (form) {
-  return form.filter((element) => !element.validity.valid);
+  return Array.from(form.elements).filter((element) => !element.validity.valid);
 };
