@@ -33,3 +33,7 @@ export const getParceArray = function (array) {
 export const getRandomArrayElements = function (array) {
   return array[getRandomNum(0, array.length - 1)];
 };
+
+export const getInvalidElements = function (form) {
+  return Array.from(form.elements).filter((element) => !element.validity.valid);
+};

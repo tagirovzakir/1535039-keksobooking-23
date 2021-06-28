@@ -641,6 +641,10 @@ fieldset {
           box-shadow: 0 0 2px 2px #ff6547;
 }
 
+.ad-form__element .invalid {
+  outline: none;
+  background: #ffdad7;
+}
 
 /* Футер
    ========================================================================== */
