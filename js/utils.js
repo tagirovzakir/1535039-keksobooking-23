@@ -37,3 +37,7 @@ export const getRandomArrayElements = function (array) {
 export const getInvalidElements = function (form) {
   return Array.from(form.elements).filter((element) => !element.validity.valid);
 };
+
+export const removeInvalidClass = function (formElement) {
+  if (formElement.validity.valid) { formElement.classList.remove('invalid'); }
+};
