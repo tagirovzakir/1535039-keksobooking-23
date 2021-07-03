@@ -1,20 +1,19 @@
 import { adverts } from './data.js';
 import { changeFormsState } from './change-form-state.js';
 import './validate-form.js';
-import { createMap, appendMarkers, resetMap, getCurrentCoords } from './generate-map.js';
-import { addressInputInitial, setResetCallback } from './form.js';
-
-const centerCoords = document.querySelector('#address').dataset.centerCoords.split(',');
+import { mapCenter } from './map-center.js';
+import { Map } from './generate-map.js';
+import { addressInputInitial, setResetCallback, setCurrentAddress } from './form.js';
 
 changeFormsState(true);
 
-const myMap = createMap('map-canvas', centerCoords, () => { changeFormsState(false); });
-myMap.whenReady(() => {
-  appendMarkers(myMap, adverts);
-  addressInputInitial(centerCoords);
+const map = new Map('map-canvas', mapCenter);
+
+map.setLoadCallback(() => {
+  map.addMarkers(adverts);
+  addressInputInitial(mapCenter);
+  changeFormsState(false);
 });
 
-getCurrentCoords();
-
-setResetCallback(() => {resetMap(myMap, centerCoords);});
-
+map.setMoveCallback(setCurrentAddress);
+setResetCallback(() => { map.reset(); });

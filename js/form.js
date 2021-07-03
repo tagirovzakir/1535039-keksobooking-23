@@ -1,9 +1,9 @@
-const addressInput = document.querySelector('#address');
-const resetButton = document.querySelector('.ad-form__reset');
+const addressInput = document.forms['ad-form'].querySelector('#address');
+const resetButton = document.forms['ad-form'].querySelector('.ad-form__reset');
 
-addressInput.defaultValue = addressInput.dataset.centerCoords;
 
 export const addressInputInitial = function (center) {
+  addressInput.defaultValue = center;
   addressInput.readOnly = true;
   addressInput.value = center;
 };
@@ -14,7 +14,7 @@ export const setResetCallback = function (callback) {
   });
 };
 
-export const getCurrentAddress = function (coords) {
-  addressInput.value = `${coords.lat.toFixed(5)}, ${coords.lng.toFixed(5)}`;
+export const setCurrentAddress = function (lat, lng) {
+  addressInput.value = `${lat}, ${lng}`;
 };
 
