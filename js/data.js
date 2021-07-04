@@ -76,5 +76,4 @@ const Advert = function () {
   this.offer.addres = Object.values(this.location).join(', ');
 };
 
-// eslint-disable-next-line no-unused-vars
 export const adverts = new Array(ADVENTS_COUNTS).fill(null).map(() => new Advert());

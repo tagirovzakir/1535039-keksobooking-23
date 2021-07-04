@@ -4,8 +4,10 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="leaflet/leaflet.css">
   <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
   <title>Кексобукинг</title>
+  <script src="leaflet/leaflet.js" defer></script>
   <script type="module" src="js/main.js" defer></script>
 </head>
 <body>
@@ -24,7 +26,7 @@
 
       <!-- Фильтрация объявлений -->
       <div class="map__filters-container">
-        <form action="#" class="map__filters" autocomplete="off" data-hiding-class='map__filters'>
+        <form name="map-filters" action="#" class="map__filters" autocomplete="off" data-hiding-class='map__filters'>
           <select name="housing-type" id="housing-type" class="map__filter">
             <option value="any" selected>Любой тип жилья</option>
             <option value="bungalow">Бунгало</option>
@@ -72,7 +74,7 @@
     <!-- Форма объявления -->
     <section class="notice">
       <h2 class="notice__title">Ваше объявление</h2>
-      <form class="ad-form" action="https://23.javascript.pages.academy/keksobooking" method="post" enctype="multipart/form-data" autocomplete="off" data-hiding-class="ad-form">
+      <form name="ad-form" class="ad-form" action="https://23.javascript.pages.academy/keksobooking" method="post" enctype="multipart/form-data" autocomplete="off" data-hiding-class="ad-form">
         <fieldset class="ad-form-header">
           <legend class="ad-form-header__title">Ваша фотография (для карты)</legend>
           <div class="ad-form-header__upload">
@@ -92,7 +94,7 @@
         </fieldset>
         <fieldset class="ad-form__element ad-form__element--wide">
           <label class="ad-form__label" for="address">Адрес (координаты)</label>
-          <input id="address" name="address" type="text" readonly value="35.66000 139.75000" required>
+          <input id="address" name="address" type="text" required>
         </fieldset>
         <fieldset class="ad-form__element">
           <label class="ad-form__label" for="type">Тип жилья</label>
@@ -230,6 +232,5 @@
       <button type="button" class="error__button">Попробовать снова</button>
     </div>
   </template>
-
 </body>
 </html>
