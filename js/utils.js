@@ -41,3 +41,7 @@ export const getInvalidElements = function (form) {
 export const removeInvalidClass = function (formElement) {
   if (formElement.validity.valid) { formElement.classList.remove('invalid'); }
 };
+
+export const isEscEvent = function (evt) {
+  return evt.key === 'Escape' || evt.key === 'Esc';
+};
