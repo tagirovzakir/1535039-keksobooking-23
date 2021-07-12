@@ -1,6 +1,4 @@
 import { getInvalidElements, removeInvalidClass } from './utils.js';
-import { sendForm } from './send-form.js';
-import { showMessage } from './info-message.js';
 
 const adForm = document.querySelector('.ad-form');
 const typeHousing = adForm.querySelector('#type');
@@ -92,21 +90,10 @@ submitButton.addEventListener('click', (evt) => {
   evt.preventDefault();
   getInvalidElements(adForm).forEach((element) => element.classList.add('invalid'));
   validateCapacity();
-  if (!getInvalidElements(evt.target.form).length) {
-    sendForm(new FormData(evt.target.form))
-      .then(() => {
-        showMessage('success');
-        evt.target.form.reset();
-      })
-      .catch(() => {
-        showMessage('error');
-      });
-  }
 });
 
 resetButton.addEventListener('click', () => {
   getInvalidElements(adForm).forEach((element) => element.classList.remove('invalid'));
-  document.forms['map-filters'].reset();
 });
 
 adForm.addEventListener('input', (evt) => {

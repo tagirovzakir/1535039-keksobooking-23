@@ -1,5 +1,6 @@
 const addressInput = document.forms['ad-form'].querySelector('#address');
 const resetButton = document.forms['ad-form'].querySelector('.ad-form__reset');
+const submitButton = document.forms['ad-form'].querySelector('.ad-form__submit');
 
 
 export const addressInputInitial = function (center) {
@@ -8,13 +9,18 @@ export const addressInputInitial = function (center) {
   addressInput.value = center;
 };
 
-export const setResetCallback = function (callback) {
+export const setSubmitCallback = function (callback) {
+  submitButton.addEventListener('click', () => {
+    if (submitButton.form.checkValidity()) { callback(); }
+  });
+};
+
+export const setResetCallback = function (...callbacks) {
   resetButton.addEventListener('click', () => {
-    callback();
+    callbacks.forEach((callback) => callback());
   });
 };
 
 export const setCurrentAddress = function (lat, lng) {
   addressInput.value = `${lat}, ${lng}`;
 };
-
