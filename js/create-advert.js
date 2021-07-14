@@ -68,5 +68,5 @@ export const createAdvert = function (adInfo) {
       advertElement.children[index].remove();
     }
   }
-  return advertElementFragment.append(advertElement);
+  return advertElementFragment.appendChild(advertElement);
 };

@@ -45,3 +45,11 @@ export const removeInvalidClass = function (formElement) {
 export const isEscEvent = function (evt) {
   return evt.key === 'Escape' || evt.key === 'Esc';
 };
+
+export const debounce = function (callback, timeoutDelay = 500) {
+  let timeoutId;
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+};

@@ -38,7 +38,7 @@ export class Map {
     this._map = L.map(this._container).setView(coords, 13);
     this._markersLayer = L.layerGroup().addTo(this._map);
     this._map.setView(coords);
-    this._specialMarker = createSpecialMarker(coords).addTo(this._markersLayer);
+    this._specialMarker = createSpecialMarker(coords).addTo(this._map);
     this._mapLayer = L.tileLayer(
       'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
       {
@@ -60,9 +60,18 @@ export class Map {
     });
   }
 
+  removeMarkers() {
+    this._markersLayer.clearLayers();
+  }
+
+  closePopup() {
+    this._markersLayer.bindPopup().closePopup();
+  }
+
   reset () {
     this._map.setView(this._initialCoords, 13);
     this._specialMarker.setLatLng(this._initialCoords);
+    this.removeMarkers();
   }
 
   setMoveCallback (callback) {
