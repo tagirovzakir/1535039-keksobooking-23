@@ -27,7 +27,7 @@ const getAdvertFeatures = function (features) {
     features.forEach((feature) => {
       const fetureItem = document.createElement('li');
       fetureItem.classList.add('popup__feature', `popup__feature--${feature}`);
-      feturesFragment.appendChild(fetureItem);
+      feturesFragment.append(fetureItem);
     });}
   return feturesFragment;
 };
@@ -41,7 +41,7 @@ const getAdvertPhotos = function (photos) {
       image.width = 45;
       image.height = 40;
       image.classList.add('popup__photo');
-      photosFragment.appendChild(image);
+      photosFragment.append(image);
     });}
   return photosFragment;
 };
@@ -57,16 +57,16 @@ export const createAdvert = function (adInfo) {
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${adInfo.offer.checkin}, выезд до ${adInfo.offer.checkout}`;
   const featuresContainer = advertElement.querySelector('.popup__features');
   featuresContainer.innerHTML = '';
-  featuresContainer.appendChild(getAdvertFeatures(adInfo.offer.features));
+  featuresContainer.append(getAdvertFeatures(adInfo.offer.features));
   advertElement.querySelector('.popup__description').textContent = adInfo.offer.description;
   // getAdvertPhotos(advertElement.querySelector('.popup__photos'), adInfo.offer.photos);
   const photosContainer = advertElement.querySelector('.popup__photos');
   photosContainer.innerHTML = '';
-  photosContainer.appendChild(getAdvertPhotos(adInfo.offer.photos));
+  photosContainer.append(getAdvertPhotos(adInfo.offer.photos));
   for (let index = 0; index < advertElement.children.length; index++) {
     if (!advertElement.children[index].innerHTML) {
       advertElement.children[index].remove();
     }
   }
-  return advertElementFragment.appendChild(advertElement);
+  return advertElementFragment.append(advertElement);
 };

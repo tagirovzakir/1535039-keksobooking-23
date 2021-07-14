@@ -36,7 +36,7 @@ setSubmitCallback(() => {
   sendForm(new FormData(document.forms['ad-form']))
     .then(() => {
       showMessage('success');
-      document.forms['ad-form'].reset();
+      // document.forms['ad-form'].reset();
     })
     .catch(() => {
       showMessage('error');
