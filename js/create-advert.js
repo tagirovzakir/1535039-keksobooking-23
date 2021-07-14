@@ -23,24 +23,26 @@ const getDeclensionGuests = function (guests) {
 };
 const getAdvertFeatures = function (features) {
   const feturesFragment = document.createDocumentFragment();
-  features.forEach((feature) => {
-    const fetureItem = document.createElement('li');
-    fetureItem.classList.add('popup__feature', `popup__feature--${feature}`);
-    feturesFragment.appendChild(fetureItem);
-  });
+  if (features) {
+    features.forEach((feature) => {
+      const fetureItem = document.createElement('li');
+      fetureItem.classList.add('popup__feature', `popup__feature--${feature}`);
+      feturesFragment.appendChild(fetureItem);
+    });}
   return feturesFragment;
 };
 const getAdvertPhotos = function (photos) {
   const photosFragment = document.createDocumentFragment();
-  photos.forEach((photo) => {
-    const image = document.createElement('img');
-    image.src = photo;
-    image.alt = 'Фотография жилья';
-    image.width = 45;
-    image.height = 40;
-    image.classList.add('popup__photo');
-    photosFragment.appendChild(image);
-  });
+  if (photos) {
+    photos.forEach((photo) => {
+      const image = document.createElement('img');
+      image.src = photo;
+      image.alt = 'Фотография жилья';
+      image.width = 45;
+      image.height = 40;
+      image.classList.add('popup__photo');
+      photosFragment.appendChild(image);
+    });}
   return photosFragment;
 };
 

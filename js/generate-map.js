@@ -49,7 +49,7 @@ export class Map {
   }
 
   setLoadCallback (callback) {
-    this._mapLayer.on('load', () => {
+    this._map.whenReady(() => {
       callback();
     });
   }

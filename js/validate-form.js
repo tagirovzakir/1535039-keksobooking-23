@@ -86,7 +86,9 @@ advCapacity.addEventListener('change', () => {
   removeInvalidClass(advCapacity);
 });
 
-submitButton.addEventListener('click', () => {
+submitButton.addEventListener('click', (evt) => {
+  evt.preventDefault();
+  validateCapacity();
   getInvalidElements(adForm).forEach((element) => element.classList.add('invalid'));
 });
 
