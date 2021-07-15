@@ -2,7 +2,7 @@ import { isEscEvent } from './utils.js';
 
 const appendInfoMessage = function (name) {
   const infoMessage = document.querySelector(`#${name}`).content.querySelector('div').cloneNode(true);
-  document.body.append(infoMessage);
+  document.body.appendChild(infoMessage);
 };
 
 const closeMessage = function (message) {
