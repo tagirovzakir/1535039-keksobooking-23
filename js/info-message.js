@@ -2,13 +2,10 @@ import { isEscEvent } from './utils.js';
 
 const appendInfoMessage = function (name) {
   const infoMessage = document.querySelector(`#${name}`).content.querySelector('div').cloneNode(true);
-  infoMessage.classList.add('result-message');
   document.body.appendChild(infoMessage);
 };
 
-const closeMessage = function () {
-  const message = document.querySelector('.result-message');
-  document.removeEventListener('keydown', onEscKeyDown);
+const closeMessage = function (message) {
   message.remove();
   document.body.style.overflow = '';
 };
@@ -18,26 +15,30 @@ export const showMessage = function (name) {
   appendInfoMessage(name);
   const resultMessage = document.querySelector(`.${name}`);
   document.addEventListener('keydown', onEscKeyDown);
-  closeOnClick(resultMessage);
+  closeOnClick();
   if (name === 'error') {
-    closeOnButton(resultMessage);
+    closeOnButton();
+  }
+
+  function closeOnClick () {
+    resultMessage.addEventListener('click', () => {
+      closeMessage(resultMessage);
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+  }
+  function closeOnButton () {
+    const closeButton = resultMessage.querySelector('.error__button');
+    closeButton.addEventListener('click', () => {
+      closeMessage(resultMessage);
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+  }
+  function onEscKeyDown (evt) {
+    evt.preventDefault();
+    if (isEscEvent(evt)) {
+      closeMessage(resultMessage);
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
   }
 };
 
-function closeOnClick (message) {
-  message.addEventListener('click', () => {
-    closeMessage();
-  });
-}
-function closeOnButton (message) {
-  const closeButton = message.querySelector('.error__button');
-  closeButton.addEventListener('click', () => {
-    closeMessage();
-  });
-}
-function onEscKeyDown(evt) {
-  evt.preventDefault();
-  if (isEscEvent(evt)) {
-    closeMessage();
-  }
-}
