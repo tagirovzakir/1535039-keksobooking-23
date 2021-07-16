@@ -1,7 +1,7 @@
-import { SERVER_LINK } from './constants.js';
+import { SERVER_URL } from './constants.js';
 
 export const loadAdverts = function () {
-  return fetch( `${SERVER_LINK}data`,
+  return fetch( `${SERVER_URL}data`,
     {
       method: 'GET',
       credentials: 'same-origin',
@@ -16,7 +16,7 @@ export const loadAdverts = function () {
 };
 
 export const sendForm = function (body) {
-  return fetch ( SERVER_LINK,
+  return fetch ( SERVER_URL,
     {
       method: 'POST',
       body,

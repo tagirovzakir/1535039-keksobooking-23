@@ -1,7 +1,11 @@
-const addressInput = document.forms['ad-form'].querySelector('#address');
-const resetButton = document.forms['ad-form'].querySelector('.ad-form__reset');
-const submitButton = document.forms['ad-form'].querySelector('.ad-form__submit');
-
+const adForm = document.forms['ad-form'];
+const addressInput = adForm.querySelector('#address');
+const resetButton = adForm.querySelector('.ad-form__reset');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const avatarContainer = adForm.querySelector('.ad-form-header__preview');
+const photoContainer = adForm.querySelector('.ad-form__photo');
+const avatarContainerInnerHtml = avatarContainer.innerHTML;
+const avatarContainerPadding = getComputedStyle(avatarContainer).padding;
 
 export const addressInputInitial = function (center) {
   addressInput.defaultValue = center;
@@ -24,3 +28,45 @@ export const setResetCallback = function (...callbacks) {
 export const setCurrentAddress = function (lat, lng) {
   addressInput.value = `${lat}, ${lng}`;
 };
+
+const adPreview = function (container, image) {
+  const reader = new FileReader();
+  const imagePreview = document.createElement('img');
+  container.innerHTML = '';
+  container.style.padding = '0';
+  container.appendChild(imagePreview);
+  imagePreview.style.cssText = 'object-fit: cover; width: 100%; height: 100%;';
+  reader.readAsDataURL(image);
+  reader.addEventListener('load', () => {
+    imagePreview.src = reader.result;
+  });
+};
+
+export const showPreviewImage = function () {
+  adForm.addEventListener('change', (evt) => {
+    const inputCheck = evt.target.matches('[type="file"]');
+    const fileTypes = [
+      'image/jpeg',
+      'image/png',
+      'image/webp',
+      'image/avif',
+    ];
+    if (inputCheck) {
+      const image = evt.target.files[0];
+      if (!fileTypes.includes(image.type)) {return;}
+      if (evt.target.name === 'avatar') {
+        adPreview(avatarContainer, image);
+      }
+      if (evt.target.name === 'images') {
+        adPreview(photoContainer, image);
+      }
+    }
+  });
+};
+
+export const removePreviews = function () {
+  avatarContainer.innerHTML = avatarContainerInnerHtml;
+  avatarContainer.style.padding = avatarContainerPadding;
+  photoContainer.innerHTML = '';
+};
+
