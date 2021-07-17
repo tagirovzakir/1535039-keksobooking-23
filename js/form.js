@@ -5,7 +5,14 @@ const submitButton = adForm.querySelector('.ad-form__submit');
 const avatarContainer = adForm.querySelector('.ad-form-header__preview');
 const photoContainer = adForm.querySelector('.ad-form__photo');
 const avatarContainerInnerHtml = avatarContainer.innerHTML;
-const avatarContainerPadding = getComputedStyle(avatarContainer).padding;
+const avatarContainerStyle = getComputedStyle(avatarContainer);
+
+const allowedTypeFiles = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/avif',
+];
 
 export const addressInputInitial = function (center) {
   addressInput.defaultValue = center;
@@ -45,15 +52,8 @@ const adPreview = function (container, image) {
 export const showPreviewImage = function () {
   adForm.addEventListener('change', (evt) => {
     const inputCheck = evt.target.matches('[type="file"]');
-    const fileTypes = [
-      'image/jpeg',
-      'image/png',
-      'image/webp',
-      'image/avif',
-    ];
-    if (inputCheck) {
-      const image = evt.target.files[0];
-      if (!fileTypes.includes(image.type)) {return;}
+    const image = evt.target.files[0];
+    if (inputCheck && allowedTypeFiles.includes(image.type)) {
       if (evt.target.name === 'avatar') {
         adPreview(avatarContainer, image);
       }
@@ -65,8 +65,12 @@ export const showPreviewImage = function () {
 };
 
 export const removePreviews = function () {
-  avatarContainer.innerHTML = avatarContainerInnerHtml;
-  avatarContainer.style.padding = avatarContainerPadding;
-  photoContainer.innerHTML = '';
+  if (adForm['avatar'].files.length) {
+    avatarContainer.innerHTML = avatarContainerInnerHtml;
+    avatarContainer.style = avatarContainerStyle;
+  }
+  if (adForm['images'].files.length) {
+    photoContainer.innerHTML = '';
+  }
 };
 

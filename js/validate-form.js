@@ -38,8 +38,8 @@ const validatePrice = function () {
 const disableInvalidOptions = function () {
   const availableValues = guestRestrictions[+advRoomNumber.value];
   Array.from(advCapacity.options).forEach((option) => {
-    const disabled = !availableValues.includes(+option.value);
-    option.disabled = disabled;
+    const hidden = !availableValues.includes(+option.value);
+    option.hidden = hidden;
   });
 };
 const validateCapacity = function () {
