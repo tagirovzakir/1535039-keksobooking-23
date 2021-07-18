@@ -1,4 +1,5 @@
-import { createAdvert } from './create-advert.js';
+import { createAdvertFragment } from './create-advert.js';
+import { SPECIAL_MARKER_ICON, COMMON_MARKER_ICON } from './constants.js';
 
 const createSpecialMarker = function (coords) {
   return L.marker(
@@ -7,7 +8,7 @@ const createSpecialMarker = function (coords) {
       draggable: true,
       riseOnHover: true,
       icon: L.icon({
-        iconUrl: '../img/main-pin.svg',
+        iconUrl: SPECIAL_MARKER_ICON,
         iconSize: [52, 52],
         iconAnchor: [26, 52],
       }),
@@ -23,7 +24,7 @@ const createCommonMarker = function (coords) {
     {
       riseOnHover: true,
       icon: L.icon({
-        iconUrl: '../img/pin.svg',
+        iconUrl: COMMON_MARKER_ICON,
         iconSize: [40, 40],
         iconAnchor: [20, 40],
       }),
@@ -56,7 +57,7 @@ export class Map {
 
   addMarkers(adverts) {
     adverts.forEach((advert) => {
-      createCommonMarker(advert.location).addTo(this._markersLayer).bindPopup(createAdvert(advert));
+      createCommonMarker(advert.location).addTo(this._markersLayer).bindPopup(createAdvertFragment(advert));
     });
   }
 
@@ -64,14 +65,11 @@ export class Map {
     this._markersLayer.clearLayers();
   }
 
-  closePopup() {
-    this._markersLayer.bindPopup().closePopup();
-  }
-
-  reset () {
+  reset (adverts) {
     this._map.setView(this._initialCoords, 13);
     this._specialMarker.setLatLng(this._initialCoords);
     this.removeMarkers();
+    this.addMarkers(adverts);
   }
 
   setMoveCallback (callback) {

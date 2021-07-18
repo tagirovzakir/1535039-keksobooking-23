@@ -1,4 +1,5 @@
-export const changeFormsState = function (disabled = true, forms) {
+export const changeFormsState = function (disabled = true, ...forms) {
+  if (!forms.length) { forms = Array.from(document.forms);}
   Array.from(document.forms).forEach((form) => {
     if (forms.includes(form)) {
       const hidingClass = `${form.dataset.hidingClass}--disabled`;

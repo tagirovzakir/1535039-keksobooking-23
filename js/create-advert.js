@@ -21,7 +21,7 @@ const getDeclensionRooms = function (rooms) {
 const getDeclensionGuests = function (guests) {
   return guests === 1 ? 'гостя' : 'гостей';
 };
-const getAdvertFeatures = function (features) {
+const getAdvertFeaturesFragment = function (features) {
   const feturesFragment = document.createDocumentFragment();
   if (features) {
     features.forEach((feature) => {
@@ -31,7 +31,7 @@ const getAdvertFeatures = function (features) {
     });}
   return feturesFragment;
 };
-const getAdvertPhotos = function (photos) {
+const getAdvertPhotosFragment = function (photos) {
   const photosFragment = document.createDocumentFragment();
   if (photos) {
     photos.forEach((photo) => {
@@ -46,7 +46,7 @@ const getAdvertPhotos = function (photos) {
   return photosFragment;
 };
 
-export const createAdvert = function (adInfo) {
+export const createAdvertFragment = function (adInfo) {
   const advertElementFragment = document.createDocumentFragment();
   const advertElement = document.querySelector('#card').content.querySelector('.popup').cloneNode(true);
   advertElement.querySelector('.popup__title').textContent = adInfo.offer.title;
@@ -57,12 +57,11 @@ export const createAdvert = function (adInfo) {
   advertElement.querySelector('.popup__text--time').textContent = `Заезд после ${adInfo.offer.checkin}, выезд до ${adInfo.offer.checkout}`;
   const featuresContainer = advertElement.querySelector('.popup__features');
   featuresContainer.innerHTML = '';
-  featuresContainer.appendChild(getAdvertFeatures(adInfo.offer.features));
+  featuresContainer.appendChild(getAdvertFeaturesFragment(adInfo.offer.features));
   advertElement.querySelector('.popup__description').textContent = adInfo.offer.description;
-  // getAdvertPhotos(advertElement.querySelector('.popup__photos'), adInfo.offer.photos);
   const photosContainer = advertElement.querySelector('.popup__photos');
   photosContainer.innerHTML = '';
-  photosContainer.appendChild(getAdvertPhotos(adInfo.offer.photos));
+  photosContainer.appendChild(getAdvertPhotosFragment(adInfo.offer.photos));
   for (let index = 0; index < advertElement.children.length; index++) {
     if (!advertElement.children[index].innerHTML) {
       advertElement.children[index].remove();

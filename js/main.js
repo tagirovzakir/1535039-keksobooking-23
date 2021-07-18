@@ -3,24 +3,23 @@ import { changeFormsState } from './change-form-state.js';
 import './validate-form.js';
 import { mapCenter, ADVERTS_COUNTS } from './constants.js';
 import { Map } from './generate-map.js';
-import { addressInputInitial, setSubmitCallback, setResetCallback, setCurrentAddress } from './form.js';
+import { addressInputInitial, setSubmitCallback, setResetCallback, setCurrentAddress, showPreviewImage, removePreviews } from './form.js';
 import { showAdvertsErrorMessage } from './show-adverts-error-message.js';
 import { loadAdverts, sendForm } from './server-operations.js';
-import { showMessage } from './info-message.js';
+import { changeMessage } from './info-message.js';
 import { getFilteredAdverts, setChangeCallback } from './map-filters.js';
 import { debounce } from './utils.js';
 
-const mapContainer = document.querySelector('#map-canvas');
+const allForms = document.forms;
 const map = new Map('map-canvas', mapCenter);
-const allForms = Array.from(document.forms);
 
-changeFormsState(true, allForms);
+changeFormsState();
 
 map.setLoadCallback(() => {
-  changeFormsState(false, [document.forms['ad-form']]);
+  changeFormsState(false, allForms['ad-form']);
   addressInputInitial(mapCenter);
-  const loadAdvertsPromise = loadAdverts();
-  loadAdvertsPromise
+  showPreviewImage();
+  loadAdverts()
     .then((ads) => {
       const firstElement = getRandomNum(0, ads.length - ADVERTS_COUNTS + 1);
       const result = ads.slice(firstElement, firstElement + ADVERTS_COUNTS);
@@ -31,30 +30,28 @@ map.setLoadCallback(() => {
         map.addMarkers(filteredAds);
       });
       setChangeCallback(delayedOnChange);
-      changeFormsState(false, [document.forms['map-filters']]);
+      changeFormsState(false, allForms['map-filters']);
       map.addMarkers(result);
       map.setMoveCallback(setCurrentAddress);
       setResetCallback(() => {
-        map.reset();
-        map.addMarkers(result);
-        document.forms['map-filters'].reset();
+        map.reset(result);
+        allForms['map-filters'].reset();
+        removePreviews();
       });
       setSubmitCallback(() => {
-        sendForm(new FormData(document.forms['ad-form']))
+        sendForm(new FormData(allForms['ad-form']))
           .then(() => {
-            showMessage('success');
-            document.forms['ad-form'].reset();
-            map.reset();
-            map.addMarkers(result);
+            changeMessage('success');
+            map.reset(result);
+            for (const form of allForms) {form.reset();}
+            removePreviews();
           })
           .catch(() => {
-            showMessage('error');
+            changeMessage('error');
           });
       });
     })
     .catch(() => {
-      showAdvertsErrorMessage(mapContainer);
+      showAdvertsErrorMessage();
     });
 });
-
-

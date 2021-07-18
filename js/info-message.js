@@ -10,35 +10,39 @@ const closeMessage = function (message) {
   document.body.style.overflow = '';
 };
 
-export const showMessage = function (name) {
-  document.body.style.overflow = 'hidden';
-  appendInfoMessage(name);
-  const resultMessage = document.querySelector(`.${name}`);
+const setClosingMethods = function (message, name) {
+  const onEscKeyDown = function (evt) {
+    evt.preventDefault();
+    if (isEscEvent(evt)) {
+      closeMessage(message);
+      document.removeEventListener('keydown', onEscKeyDown);
+    }
+  };
+  const closeOnClick = function () {
+    message.addEventListener('click', () => {
+      closeMessage(message);
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+  };
+  const closeOnButton = function () {
+    const closeButton = message.querySelector('.error__button');
+    closeButton.addEventListener('click', () => {
+      closeMessage(message);
+      document.removeEventListener('keydown', onEscKeyDown);
+    });
+  };
+
   document.addEventListener('keydown', onEscKeyDown);
   closeOnClick();
   if (name === 'error') {
     closeOnButton();
   }
+};
 
-  function closeOnClick () {
-    resultMessage.addEventListener('click', () => {
-      closeMessage(resultMessage);
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-  }
-  function closeOnButton () {
-    const closeButton = resultMessage.querySelector('.error__button');
-    closeButton.addEventListener('click', () => {
-      closeMessage(resultMessage);
-      document.removeEventListener('keydown', onEscKeyDown);
-    });
-  }
-  function onEscKeyDown (evt) {
-    evt.preventDefault();
-    if (isEscEvent(evt)) {
-      closeMessage(resultMessage);
-      document.removeEventListener('keydown', onEscKeyDown);
-    }
-  }
+export const changeMessage = function (name) {
+  document.body.style.overflow = 'hidden';
+  appendInfoMessage(name);
+  const resultMessage = document.querySelector(`.${name}`);
+  setClosingMethods(resultMessage, name);
 };
 
