@@ -1,5 +1,12 @@
 import { isEscEvent } from './utils.js';
 
+const mapContainer = document.querySelector('#map-canvas');
+
+export const showAdvertsErrorMessage = function () {
+  const advertsErrorMessage = document.querySelector('#adv-error').content.querySelector('.adv-error').cloneNode(true);
+  mapContainer.appendChild(advertsErrorMessage);
+};
+
 const appendInfoMessage = function (name) {
   const infoMessage = document.querySelector(`#${name}`).content.querySelector('div').cloneNode(true);
   document.body.appendChild(infoMessage);

@@ -1,7 +1,7 @@
-import { SERVER_URL } from './constants.js';
+import { SERVER_URL, DATA_URL } from './constants.js';
 
 export const loadAdverts = function () {
-  return fetch( `${SERVER_URL}data`,
+  return fetch( DATA_URL,
     {
       method: 'GET',
       credentials: 'same-origin',

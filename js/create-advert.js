@@ -1,3 +1,5 @@
+import { AD_PHOTO_SIZE } from './constants.js';
+
 const mapType = {
   palace: 'Дворец',
   flat: 'Квартира',
@@ -22,14 +24,14 @@ const getDeclensionGuests = function (guests) {
   return guests === 1 ? 'гостя' : 'гостей';
 };
 const getAdvertFeaturesFragment = function (features) {
-  const feturesFragment = document.createDocumentFragment();
+  const featuresFragment = document.createDocumentFragment();
   if (features) {
     features.forEach((feature) => {
       const fetureItem = document.createElement('li');
       fetureItem.classList.add('popup__feature', `popup__feature--${feature}`);
-      feturesFragment.appendChild(fetureItem);
+      featuresFragment.appendChild(fetureItem);
     });}
-  return feturesFragment;
+  return featuresFragment;
 };
 const getAdvertPhotosFragment = function (photos) {
   const photosFragment = document.createDocumentFragment();
@@ -38,8 +40,7 @@ const getAdvertPhotosFragment = function (photos) {
       const image = document.createElement('img');
       image.src = photo;
       image.alt = 'Фотография жилья';
-      image.width = 45;
-      image.height = 40;
+      [image.width, image.height] = AD_PHOTO_SIZE;
       image.classList.add('popup__photo');
       photosFragment.appendChild(image);
     });}
@@ -62,10 +63,8 @@ export const createAdvertFragment = function (adInfo) {
   const photosContainer = advertElement.querySelector('.popup__photos');
   photosContainer.innerHTML = '';
   photosContainer.appendChild(getAdvertPhotosFragment(adInfo.offer.photos));
-  for (let index = 0; index < advertElement.children.length; index++) {
-    if (!advertElement.children[index].innerHTML) {
-      advertElement.children[index].remove();
-    }
-  }
+  Array.from(advertElement.children).forEach((child) => {
+    if (!child.innerHTML) { child.remove(); }
+  });
   return advertElementFragment.appendChild(advertElement);
 };

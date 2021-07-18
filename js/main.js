@@ -1,12 +1,12 @@
 import { getRandomNum } from './utils.js';
 import { changeFormsState } from './change-form-state.js';
 import './validate-form.js';
-import { mapCenter, ADVERTS_COUNTS } from './constants.js';
-import { Map } from './generate-map.js';
+import { mapCenter, ADVERTS_COUNTS, FILTER_DELAY } from './constants.js';
+import { Map } from './map.js';
 import { addressInputInitial, setSubmitCallback, setResetCallback, setCurrentAddress, showPreviewImage, removePreviews } from './form.js';
 import { showAdvertsErrorMessage } from './show-adverts-error-message.js';
 import { loadAdverts, sendForm } from './server-operations.js';
-import { changeMessage } from './info-message.js';
+import { changeMessage } from './info-messages.js';
 import { getFilteredAdverts, setChangeCallback } from './map-filters.js';
 import { debounce } from './utils.js';
 
@@ -28,7 +28,7 @@ map.setLoadCallback(() => {
         const filteredAds = getFilteredAdverts(ads);
         filteredAds.splice(ADVERTS_COUNTS);
         map.addMarkers(filteredAds);
-      });
+      }, FILTER_DELAY);
       setChangeCallback(delayedOnChange);
       changeFormsState(false, allForms['map-filters']);
       map.addMarkers(result);
@@ -43,7 +43,7 @@ map.setLoadCallback(() => {
           .then(() => {
             changeMessage('success');
             map.reset(result);
-            for (const form of allForms) {form.reset();}
+            Array.from(allForms).forEach((form) => form.reset());
             removePreviews();
           })
           .catch(() => {

@@ -32,14 +32,8 @@ const filterByPrice = function (adv) {
     }
   }
 };
-const filterByFeatures = function (choosed, adv) {
-  if (choosed.length === 0) {
-    return true;
-  } else if (adv.offer.features) {
-    if (choosed.every((feature) => adv.offer.features.includes(feature))) {
-      return true;
-    }
-  }
+const filterByFeatures = function (chosen, features = []) {
+  return !chosen.length || chosen.every((feature) => features.includes(feature));
 };
 
 export const setChangeCallback = function (callback) {
@@ -47,7 +41,7 @@ export const setChangeCallback = function (callback) {
 };
 
 export const getFilteredAdverts = function (adverts) {
-  const choosedFeatures = new FormData(advFilter).getAll('features');
-  const filteredAdverts =  adverts.filter((adv) => filterByType(adv) && filterByRooms(adv) && filterByGuests(adv) && filterByPrice(adv) && filterByFeatures(choosedFeatures, adv));
+  const chosenFeatures = new FormData(advFilter).getAll('features');
+  const filteredAdverts =  adverts.filter((adv) => filterByType(adv) && filterByRooms(adv) && filterByGuests(adv) && filterByPrice(adv) && filterByFeatures(chosenFeatures, adv.offer.features));
   return filteredAdverts;
 };
