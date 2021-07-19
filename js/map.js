@@ -56,9 +56,11 @@ export class Map {
   }
 
   addMarkers(adverts) {
-    adverts.forEach((advert) => {
-      createCommonMarker(advert.location).addTo(this._markersLayer).bindPopup(createAdvertFragment(advert));
-    });
+    if (adverts) {
+      adverts.forEach((advert) => {
+        createCommonMarker(advert.location).addTo(this._markersLayer).bindPopup(createAdvertFragment(advert));
+      });
+    }
   }
 
   removeMarkers() {

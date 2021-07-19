@@ -1,13 +1,5 @@
 import { getInvalidElements, removeInvalidClass } from './utils.js';
 
-const adForm = document.querySelector('.ad-form');
-const typeHousing = adForm.querySelector('#type');
-const priceInput = adForm.querySelector('#price');
-const timeSelect = adForm.querySelector('.ad-form__element--time');
-const advRoomNumber = adForm.querySelector('#room_number');
-const advCapacity = adForm.querySelector('#capacity');
-const submitButton = adForm.querySelector('.ad-form__submit');
-const resetButton = adForm.querySelector('.ad-form__reset');
 const guestRestrictions = {
   1: [1],
   2: [1, 2],
@@ -21,8 +13,16 @@ const priceRestrictions = {
   'house': 5000,
   'palace': 10000,
 };
+const adForm = document.querySelector('.ad-form');
+const typeHousing = adForm.querySelector('#type');
+const priceInput = adForm.querySelector('#price');
+const timeSelect = adForm.querySelector('.ad-form__element--time');
+const advRoomNumber = adForm.querySelector('#room_number');
+const advCapacity = adForm.querySelector('#capacity');
+const submitButton = adForm.querySelector('.ad-form__submit');
+const resetButton = adForm.querySelector('.ad-form__reset');
 
-const initialPriceInput = function () {
+const setPriceInput = function () {
   const minimalPrice = priceRestrictions[typeHousing.value];
   priceInput.min = minimalPrice;
   priceInput.placeholder = minimalPrice;
@@ -52,13 +52,13 @@ const validateCapacity = function () {
 };
 
 window.addEventListener('load', () => {
-  initialPriceInput();
+  setPriceInput();
   disableInvalidOptions();
   validateCapacity();
 });
 
 typeHousing.addEventListener('change', () => {
-  initialPriceInput();
+  setPriceInput();
   validatePrice();
   priceInput.reportValidity();
   removeInvalidClass(priceInput);

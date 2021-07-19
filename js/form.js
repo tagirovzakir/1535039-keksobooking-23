@@ -36,7 +36,7 @@ export const setCurrentAddress = function (lat, lng) {
   addressInput.value = `${lat}, ${lng}`;
 };
 
-const adPreview = function (container, image) {
+const createPreview = function (container, image) {
   const reader = new FileReader();
   const imagePreview = document.createElement('img');
   container.innerHTML = '';
@@ -51,14 +51,15 @@ const adPreview = function (container, image) {
 
 export const showPreviewImage = function () {
   adForm.addEventListener('change', (evt) => {
-    const inputCheck = evt.target.matches('[type="file"]');
-    const image = evt.target.files[0];
-    if (inputCheck && allowedTypeFiles.includes(image.type)) {
-      if (evt.target.name === 'avatar') {
-        adPreview(avatarContainer, image);
-      }
-      if (evt.target.name === 'images') {
-        adPreview(photoContainer, image);
+    if (evt.target.matches('[type="file"]')) {
+      const image = evt.target.files[0];
+      if (allowedTypeFiles.includes(image.type)) {
+        if (evt.target.name === 'avatar') {
+          createPreview(avatarContainer, image);
+        }
+        if (evt.target.name === 'images') {
+          createPreview(photoContainer, image);
+        }
       }
     }
   });

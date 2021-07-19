@@ -32,6 +32,12 @@ map.setLoadCallback(() => {
       setChangeCallback(delayedOnChange);
       changeFormsState(false, allForms['map-filters']);
       map.addMarkers(result);
+      return (result);
+    })
+    .catch(() => {
+      showAdvertsErrorMessage();
+    })
+    .then((result) => {
       map.setMoveCallback(setCurrentAddress);
       setResetCallback(() => {
         map.reset(result);
@@ -50,8 +56,5 @@ map.setLoadCallback(() => {
             changeMessage('error');
           });
       });
-    })
-    .catch(() => {
-      showAdvertsErrorMessage();
     });
 });

@@ -12,13 +12,9 @@ const getAdvertType = function (type) {
   return mapType[type];
 };
 const getDeclensionRooms = function (rooms) {
-  if (rooms > 4) {
-    return 'комнат';
-  } else if (rooms > 1) {
-    return 'комнаты';
-  } else {
-    return 'комната';
-  }
+  if (rooms > 4) { return 'комнат'; }
+  if (rooms > 1) { return 'комнаты'; }
+  return 'комната';
 };
 const getDeclensionGuests = function (guests) {
   return guests === 1 ? 'гостя' : 'гостей';
