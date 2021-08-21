@@ -4,8 +4,7 @@ const resetButton = adForm.querySelector('.ad-form__reset');
 const submitButton = adForm.querySelector('.ad-form__submit');
 const avatarContainer = adForm.querySelector('.ad-form-header__preview');
 const photoContainer = adForm.querySelector('.ad-form__photo');
-const avatarContainerInnerHtml = avatarContainer.innerHTML;
-const avatarContainerStyle = getComputedStyle(avatarContainer);
+const avatarContainerInnerHtml = avatarContainer.cloneNode(true);
 
 const allowedTypeFiles = [
   'image/jpeg',
@@ -17,7 +16,6 @@ const allowedTypeFiles = [
 export const addressInputInitial = function (center) {
   addressInput.defaultValue = center;
   addressInput.readOnly = true;
-  addressInput.value = center;
 };
 
 export const setSubmitCallback = function (callback) {
@@ -67,8 +65,8 @@ export const showPreviewImage = function () {
 
 export const removePreviews = function () {
   if (adForm['avatar'].files.length) {
-    avatarContainer.innerHTML = avatarContainerInnerHtml;
-    avatarContainer.style = avatarContainerStyle;
+    avatarContainer.innerHTML = '';
+    avatarContainer.appendChild(avatarContainerInnerHtml);
   }
   if (adForm['images'].files.length) {
     photoContainer.innerHTML = '';
